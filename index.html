@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro  </title>
+</head>
+
+<body>
+    <h1> registro</h1>
+    <div>
+        <input type="text" id="nombre">
+        <input type="text" id="apellido">
+        <input type="text" id="telefono">
+        <button id="btnGuardar">
+            Guardar
+        </button>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <td>Nombre</td>
+                    <td>Apellido</td>
+                    <td>Teléfono</td>
+                    <td>Opciones</td>
+                </tr>
+            </thead>
+            <tbody id="datos">
+
+            </tbody>
+        </table>
+    </div>
+    <script>
+        let inpNombre = document.getElementById("nombre")
+        let inpApellido = document.getElementById("apellido")
+        let inpTelefono = document.getElementById("telefono")
+        let registro = [];
+
+        document.getElementById("btnGuardar").addEventListener("click", () => {
+            if (inpNombre.value == "") {
+                alert("se requiere el nombre")
+            } else if (inpApellido.value == "") {
+                alert("se requiere el apellido")
+            } else if (inpTelefono.value == "") {
+                alert(" se requiere el telefono")
+            } else {
+                let data = {
+                    id: Date.now(),
+                    nombre: inpNombre.value,
+                    apellido: inpApellido.value,
+                    telefono: inpTelefono.value
+                }
+                registro.push(data)
+                console.log(registro);
+                pintar()
+                limpiar()
+            }
+        })
+        function limpiar() {
+            inpNombre.value = ""
+            inpApellido.value = ""
+            inpTelefono.value = ""
+        }
+
+        function pintar() {
+            document.getElementById("datos").textContent = ""
+            registro.forEach((item, indice) => {
+                let tr = document.createElement("tr")
+                let tdId = document.createElement("td")
+                let tdNombre = document.createElement("td")
+                let tdApellido = document.createElement("td")
+                let tdTelefono = document.createElement("td")
+                let tdOpciones = document.createElement("td")
+                tdId.textContent = item.id
+                tdNombre.textContent = item.nombre
+                tdApellido.textContent = item.apellido
+                tdTelefono.textContent = item.telefono
+                let btnEditar = document.createElement("button")
+                btnEditar.textContent = "📝"
+                btnEditar.addEventListener("click", () => {
+                    inpNombre.value = item.nombre
+                    inpApellido.value = item.apellido
+                    inpTelefono.value = item.telefono
+                    registro.splice(indice, 1)
+                    pintar()
+                })
+                let btnEliminar = document.createElement("button")
+                btnEliminar.textContent = "🗑️"
+                btnEliminar.addEventListener("click", () => {
+                    registro.splice(indice, 1)
+                    pintar()
+                })
+                tdOpciones.appendChild(btnEditar)
+                tdOpciones.appendChild(btnEliminar)
+                tr.appendChild(tdId)
+                tr.appendChild(tdNombre)
+                tr.appendChild(tdApellido)
+                tr.appendChild(tdTelefono)
+                tr.appendChild(tdOpciones)
+                document.getElementById("datos").appendChild(tr)
+
+
+
+            })
+
+
+
+
+        }
+    </script>
+</body>
+
+</html>
